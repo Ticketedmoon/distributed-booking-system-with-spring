@@ -1,2 +1,0 @@
-# Room-Booking-Distributed-Assignment
-
