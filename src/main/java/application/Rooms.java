@@ -14,7 +14,6 @@ public class Rooms {
     }
 
     public Room getRoom(String roomName){
-        Room roominfo = rooms.get(roomName);
         return rooms.get(roomName);
     }
 
