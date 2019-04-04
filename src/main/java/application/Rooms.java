@@ -14,7 +14,7 @@ public class Rooms {
         this.rooms = rooms;
     }
 
-    public Room getRoom(){
-        return null;
+    public Room getRoom(String roomName){
+        return rooms.get(roomName);
     }
 }
