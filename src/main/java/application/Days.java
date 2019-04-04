@@ -1,10 +1,12 @@
 package application;
 
+import java.util.HashMap;
+
 public class Days {
 
     private String day;
-    private int [] timeslotCapacity;
-
+    //private int [] timeslotCapacity;
+    private HashMap<String, Integer> timeslotCapacity;
 
     public String getDay(){
         return day;
@@ -14,7 +16,7 @@ public class Days {
         this.day = day;
     }
 
-    public int [] getTimeslotCapacity()
+    public HashMap<String, Integer> getTimeslotCapacity()
     {
         return timeslotCapacity;
     }
