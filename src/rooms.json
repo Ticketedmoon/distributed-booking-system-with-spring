@@ -1,314 +1,301 @@
 {
-	"rooms":  [
-				{
-					"roomName": "L221",
-					"capacity": 50,
-					"days": [
-						{
-							"day": "Monday",
-							"timeslotCapacity": [
-									50,
-									50,
-									50,
-									50,
-									50
-								]
-						},
-						{
-							"day": "Tuesday",
-							"timeslotCapacity": [
-                                    50,
-                                    50,
-                                    50,
-                                    50,
-                                    50
-								]
-						},
-						{
-							"day": "Wednesday",
-							"timeslotCapacity": [
-                                    50,
-                                    50,
-                                    50,
-                                    50,
-                                    50
-								]
-						},
-						{
-							"day": "Thursday",
-							"timeslotCapacity": [
-                                    50,
-                                    50,
-                                    50,
-                                    50,
-                                    50
-								]
-						},
-						{
-							"day": "Friday",
-							"timeslotCapacity": [
-                                    50,
-                                    50,
-                                    50,
-                                    50,
-                                    50
-								]
-						},
-						{
-							"day": "Saturday",
-							"timeslotCapacity": [
-                                    50,
-                                    50,
-                                    50,
-                                    50,
-                                    50
-								]
-						},
-						{
-							"day": "Sunday",
-							"timeslotCapacity": [
-                                    50,
-                                    50,
-                                    50,
-                                    50,
-                                    50
-								]
-						}
+  "rooms": {
+    "L221": {
+      "capacity": 50,
+      "days": [{
+        "day": "Monday",
+        "timeslotCapacity": [
+          50,
+          50,
+          50,
+          50,
+          50
+        ]
+      },
+        {
+          "day": "Tuesday",
+          "timeslotCapacity": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "day": "Wednesday",
+          "timeslotCapacity": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "day": "Thursday",
+          "timeslotCapacity": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "day": "Friday",
+          "timeslotCapacity": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "day": "Saturday",
+          "timeslotCapacity": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "day": "Sunday",
+          "timeslotCapacity": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        }
+      ]
+    },
+    "XG14": {
+      "capacity": 35,
+      "days": [{
+        "day": "Monday",
+        "timeslotCapacity": [
+          35,
+          35,
+          35,
+          35,
+          35
+        ]
+      },
+        {
+          "day": "Tuesday",
+          "timeslotCapacity": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        },
+        {
+          "day": "Wednesday",
+          "timeslotCapacity": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        },
+        {
+          "day": "Thursday",
+          "timeslotCapacity": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        },
+        {
+          "day": "Friday",
+          "timeslotCapacity": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        },
+        {
+          "day": "Saturday",
+          "timeslotCapacity": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        },
+        {
+          "day": "Sunday",
+          "timeslotCapacity": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        }
+      ]
+    },
+    "T101": {
+      "capacity": 400,
+      "days": [{
+        "day": "Monday",
+        "timeslotCapacity": [
+          400,
+          400,
+          400,
+          400,
+          400
+        ]
+      },
+        {
+          "day": "Tuesday",
+          "timeslotCapacity": [
+            400,
+            400,
+            400,
+            400,
+            400
+          ]
+        },
+        {
+          "day": "Wednesday",
+          "timeslotCapacity": [
+            400,
+            400,
+            400,
+            400,
+            400
+          ]
+        },
+        {
+          "day": "Thursday",
+          "timeslotCapacity": [
+            400,
+            400,
+            400,
+            400,
+            400
+          ]
+        },
+        {
+          "day": "Friday",
+          "timeslotCapacity": [
+            400,
+            400,
+            400,
+            400,
+            400
+          ]
+        },
+        {
+          "day": "Saturday",
+          "timeslotCapacity": [
+            400,
+            400,
+            400,
+            400,
+            400
+          ]
+        },
+        {
+          "day": "Sunday",
+          "timeslotCapacity": [
+            400,
+            400,
+            400,
+            400,
+            400
+          ]
+        }
+      ]
+    },
+    "CG04": {
+      "capacity": 40,
+      "days": [{
+        "day": "Monday",
+        "timeslotCapacity": [
+          40,
+          40,
+          40,
+          40,
+          40
+        ]
+      },
+        {
+          "day": "Tuesday",
+          "timeslotCapacity": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        },
+        {
+          "day": "Wednesday",
+          "timeslotCapacity": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        },
+        {
+          "day": "Thursday",
+          "timeslotCapacity": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        },
+        {
+          "day": "Friday",
+          "timeslotCapacity": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        },
+        {
+          "day": "Saturday",
+          "timeslotCapacity": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        },
+        {
+          "day": "Sunday",
+          "timeslotCapacity": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ]
+    }
+  }
 
-					]
-				},
-				{
-					"roomName": "XG14",
-					"capacity": 35,
-					"days": [
-						{
-							"day": "Monday",
-							"timeslotCapacity": [
-									35,
-                                    35,
-                                    35,
-                                    35,
-                                    35
-								]
-						},
-						{
-							"day": "Tuesday",
-                          "timeslotCapacity": [
-                            35,
-                            35,
-                            35,
-                            35,
-                            35
-                          ]
-						},
-						{
-							"day": "Wednesday",
-                          "timeslotCapacity": [
-                            35,
-                            35,
-                            35,
-                            35,
-                            35
-                          ]
-						},
-						{
-							"day": "Thursday",
-                          "timeslotCapacity": [
-                            35,
-                            35,
-                            35,
-                            35,
-                            35
-                          ]
-						},
-						{
-							"day": "Friday",
-                          "timeslotCapacity": [
-                            35,
-                            35,
-                            35,
-                            35,
-                            35
-                          ]
-						},
-						{
-							"day": "Saturday",
-                          "timeslotCapacity": [
-                            35,
-                            35,
-                            35,
-                            35,
-                            35
-                          ]
-						},
-						{
-							"day": "Sunday",
-                          "timeslotCapacity": [
-                            35,
-                            35,
-                            35,
-                            35,
-                            35
-                          ]
-						}
-
-					]
-				},
-				{
-					"roomName": "T101",
-					"capacity": 400,
-					"days": [
-						{
-							"day": "Monday",
-							"timeslotCapacity": [
-									400,
-                                    400,
-                                    400,
-                                    400,
-                                    400
-								]
-						},
-						{
-							"day": "Tuesday",
-                          "timeslotCapacity": [
-                            400,
-                            400,
-                            400,
-                            400,
-                            400
-                          ]
-						},
-						{
-							"day": "Wednesday",
-                          "timeslotCapacity": [
-                            400,
-                            400,
-                            400,
-                            400,
-                            400
-                          ]
-						},
-						{
-							"day": "Thursday",
-                          "timeslotCapacity": [
-                            400,
-                            400,
-                            400,
-                            400,
-                            400
-                          ]
-						},
-						{
-							"day": "Friday",
-                          "timeslotCapacity": [
-                            400,
-                            400,
-                            400,
-                            400,
-                            400
-                          ]
-						},
-						{
-							"day": "Saturday",
-                          "timeslotCapacity": [
-                            400,
-                            400,
-                            400,
-                            400,
-                            400
-                          ]
-						},
-						{
-							"day": "Sunday",
-                          "timeslotCapacity": [
-                            400,
-                            400,
-                            400,
-                            400,
-                            400
-                          ]
-						}
-
-					]
-				},
-				{
-					"roomName": "CG04",
-					"capacity": 40,
-					"days": [
-						{
-							"day": "Monday",
-							"timeslotCapacity": [
-									40,
-                                    40,
-                                    40,
-                                    40,
-                                    40
-								]
-						},
-						{
-							"day": "Tuesday",
-                          "timeslotCapacity": [
-                            40,
-                            40,
-                            40,
-                            40,
-                            40
-                          ]
-						},
-						{
-							"day": "Wednesday",
-                          "timeslotCapacity": [
-                            40,
-                            40,
-                            40,
-                            40,
-                            40
-                          ]
-						},
-						{
-							"day": "Thursday",
-                          "timeslotCapacity": [
-                            40,
-                            40,
-                            40,
-                            40,
-                            40
-                          ]
-						},
-						{
-							"day": "Friday",
-                          "timeslotCapacity": [
-                            40,
-                            40,
-                            40,
-                            40,
-                            40
-                          ]
-						},
-						{
-							"day": "Saturday",
-                          "timeslotCapacity": [
-                            40,
-                            40,
-                            40,
-                            40,
-                            40
-                          ]
-						},
-						{
-							"day": "Sunday",
-                          "timeslotCapacity": [
-                            40,
-                            40,
-                            40,
-                            40,
-                            40
-                          ]
-						}
-
-					]
-				}
-
-			]
-						
 }

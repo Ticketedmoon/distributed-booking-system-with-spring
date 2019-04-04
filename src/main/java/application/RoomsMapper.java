@@ -13,7 +13,6 @@ public class RoomsMapper {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public Rooms readJsonWithObjectMapper() throws IOException
     {
-        //TODO sort out pathing/resource folder for json file
         //TODO sort out proper representation for all classes.
         ObjectMapper objectMapper = new ObjectMapper();
         File jsonFile = new File("src/rooms.json");
