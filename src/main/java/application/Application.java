@@ -1,7 +1,10 @@
 package application;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
@@ -10,13 +13,5 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        RoomsMapper mapper = new RoomsMapper();
-
-        try {
-            //Just for logging/testing
-            mapper.readJsonWithObjectMapper();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
     }
 }

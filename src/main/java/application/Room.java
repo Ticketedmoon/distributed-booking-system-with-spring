@@ -4,18 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Room {
 
-    private String roomName;
     private AtomicInteger capacity;
     private Days [] days;
-
-
-    public String getRoomName() {
-        return roomName;
-    }
-
-    public void setRoomName(){
-        this.roomName = roomName;
-    }
 
     public int getCapacity(){
         return capacity.get();
@@ -32,4 +22,5 @@ public class Room {
     public void setDays(){
         this.days = days;
     }
+
 }

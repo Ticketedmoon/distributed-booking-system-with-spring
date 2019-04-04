@@ -1,13 +1,20 @@
 package application;
 
-public class Rooms {
-    private Room [] rooms;
+import java.util.HashMap;
 
-    public Room [] getRooms(){
+public class Rooms {
+    //private Room [] rooms;
+    private HashMap <String, Room> rooms;
+
+    public HashMap<String, Room> getRooms(){
         return rooms;
     }
 
     public void setRooms(){
         this.rooms = rooms;
+    }
+
+    public Room getRoom(){
+        return null;
     }
 }
