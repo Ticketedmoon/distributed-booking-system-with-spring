@@ -26,4 +26,17 @@ public class RoomsController {
         return rooms.getRoom(roomID);
     }
 
+    //TODO revisit converting to map instead of arrays.
+    @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}")
+    @ResponseBody
+    public Object returnDay(@PathVariable String roomID,@PathVariable int day){
+        return rooms.returnDay(roomID, day);
+    }
+
+    //TODO PLACEHOLDER. IS GET FOR TESTING. When we have an input form client side we can use POST
+    @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}/{time}")
+    @ResponseBody
+    public String bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
+        return "Booked";
+    }
 }
