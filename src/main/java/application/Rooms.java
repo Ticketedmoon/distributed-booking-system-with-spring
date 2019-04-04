@@ -1,15 +1,13 @@
 package application;
 
 public class Rooms {
+    private Room [] rooms;
 
-    private String room = "L128";
-
-    public Rooms(){
-        this.room = room;
+    public Room [] getRooms(){
+        return rooms;
     }
 
-    public String getRooms()
-    {
-        return room;
+    public void setRooms(){
+        this.rooms = rooms;
     }
 }
