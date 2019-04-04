@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class RoomsMapper {
@@ -15,7 +16,16 @@ public class RoomsMapper {
         //TODO sort out pathing/resource folder for json file
         //TODO sort out proper representation for all classes.
         ObjectMapper objectMapper = new ObjectMapper();
-        Rooms classRooms = objectMapper.readValue(new File("/home/ark/Documents/room-booking-distributed-assignment/src/rooms.json"), Rooms.class);
+        File jsonFile = new File("src/rooms.json");
+        try{
+
+            if(!jsonFile.exists()){
+                jsonFile = new File("rooms.json");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Rooms classRooms = objectMapper.readValue(jsonFile, Rooms.class);
         logger.info(classRooms.toString());
         return classRooms;
     }
