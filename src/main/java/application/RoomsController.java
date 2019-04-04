@@ -11,22 +11,19 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 public class RoomsController {
 
-    private static final String template = "These are the available rooms: %s";
-    private final AtomicLong counter = new AtomicLong();
-
     @Autowired
     private Rooms rooms;
 
-    @RequestMapping(method = RequestMethod.GET, value="/rooms")
+    @RequestMapping(method = RequestMethod.GET, value="/")
     @ResponseBody
     public HashMap<String, Room> returnAllRooms(){
         return rooms.getRooms();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value ="/rooms/L221")
+    @RequestMapping(method = RequestMethod.GET, value ="/rooms/{roomID}")
     @ResponseBody
-    public Room returnRoom(){
-        return returnRoom();
+    public Room returnRoom(@PathVariable String roomID){
+        return rooms.getRoom(roomID);
     }
 
 }
