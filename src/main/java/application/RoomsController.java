@@ -15,12 +15,21 @@ public class RoomsController {
     @Autowired
     private Rooms rooms;
 
-    @RequestMapping(method = RequestMethod.GET, value="/")
+    /**
+     * Returns the entire week timetable for each room in the application.
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value={"/","/rooms"})
     @ResponseBody
     public HashMap<String, Room> returnAllRooms(){
         return rooms.getRooms();
     }
 
+    /**
+     * Filter by roomID to give the rooms timetable for the entire week
+     * @param roomID
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET, value ="/rooms/{roomID}")
     @ResponseBody
     public Room returnRoom(@PathVariable String roomID){
@@ -28,15 +37,30 @@ public class RoomsController {
     }
 
     //TODO revisit converting to map instead of arrays.
+
+    /**
+     * Filter by roomID and day to return the timetable for that entire day.
+     * @param roomID
+     * @param day
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}")
     @ResponseBody
     public Object returnDay(@PathVariable String roomID,@PathVariable int day){
         return rooms.returnDay(roomID, day);
     }
 
-    //TODO PLACEHOLDER. IS GET FOR TESTING. When we have an input form client side we can use POST
-    //TODO What page do we want to load back to when the request is done?
-    @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}/{time}")
+
+    /**
+     * Takes roomID, day and time to issue a new booking and decrements the available slots for that time/day.
+     * Post is only allowed when submitting a form client side. If arguments are only provided as pathvariables this
+     * will fail and say that method GET is not allowed.
+     * @param roomID
+     * @param day
+     * @param time
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{roomID}/{day}/{time}")
     @ResponseBody
     public HashMap<String, Room> bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
         //TODO Protect

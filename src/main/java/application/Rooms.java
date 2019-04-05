@@ -24,7 +24,9 @@ public class Rooms {
     public HashMap <String, Room> updateBooking(String roomName, int dayOfWeek, String timeslot)
     {
         HashMap<String, Room> updatedRooms = rooms;
-        updatedRooms.get(roomName).getDays()[dayOfWeek].updateTimeSlotCapacity(timeslot);
+        updatedRooms.get(roomName)
+                .getDays()[dayOfWeek]
+                .updateTimeSlotCapacity(timeslot);
         return updatedRooms;
     }
 }
