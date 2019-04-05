@@ -10,12 +10,11 @@ public class Launcher {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(() -> launch());
 
-        //
-        RestClient restClient = new RestClient();
+        //RestClient restClient = new RestClient();
         //restClient.getRoomTimetable("L221");
         //restClient.bookRoom("L221", 0, "9-10");
 
         //restClient.restTemplateGetRoom("L221");
-        restClient.restTemplateBookRoom("L221", 0, "9-10");
+        //restClient.restTemplateBookRoom("L221", 0, "9-10");
     }
 }

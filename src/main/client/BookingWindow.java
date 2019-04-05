@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class BookingWindow extends JFrame {
 
@@ -43,14 +47,13 @@ public class BookingWindow extends JFrame {
     }
 
     private void create_menu_buttons(){
-        JPanel buttons = new JPanel(new GridLayout(0, 1, 50, 60));
-        display_button = new JButton();
-        test_button = new JButton();
-        help_button = new JButton();
+        JPanel buttons = new JPanel(new GridLayout(0, 1, 50, 20));
+        display_button = new JButton("All Rooms");
+        test_button = new JButton("Test Mode");
+        help_button = new JButton("Help");
         JButton [] design_buttons = {display_button, test_button, help_button};
 
         for (JButton button : design_buttons) {
-            button.setPreferredSize(new Dimension(80, 40));
             button.setBackground(Color.lightGray);
             button.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
         }
@@ -60,5 +63,16 @@ public class BookingWindow extends JFrame {
         buttons.add(help_button);
 
         menu.add(buttons, BorderLayout.NORTH);
+
+        display_button.addActionListener(e -> {
+            RestClient restClient = new RestClient();
+            HashMap<String, Object> rooms = restClient.restTemplateGetAllRooms();
+            rooms.forEach((k,v) -> {
+                System.out.println(k);
+                System.out.println(((LinkedHashMap) v).get("capacity"));
+            });
+            //TODO logic to add new buttons corresponding to rooms and their capacity
+        });
     }
+
 }
