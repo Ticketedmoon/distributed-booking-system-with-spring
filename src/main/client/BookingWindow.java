@@ -66,10 +66,10 @@ public class BookingWindow extends JFrame {
 
         display_button.addActionListener(e -> {
             RestClient restClient = new RestClient();
-            HashMap<String, Object> rooms = restClient.restTemplateGetAllRooms();
+            HashMap<String, HashMap<String, Object>> rooms = restClient.restTemplateGetAllRooms();
             rooms.forEach((k,v) -> {
                 System.out.println(k);
-                System.out.println(((LinkedHashMap) v).get("capacity"));
+                System.out.println(v.get("capacity"));
             });
             //TODO logic to add new buttons corresponding to rooms and their capacity
         });
