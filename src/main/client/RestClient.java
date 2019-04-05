@@ -50,7 +50,7 @@ public class RestClient {
     static ObjectMapper restTemplateMapper = new ObjectMapper();
     static RestTemplate restTemplate = new RestTemplate();
 
-    public HashMap<String, Object> restTemplateGetAllRooms(){
+    public HashMap<String, HashMap<String, Object>> restTemplateGetAllRooms(){
         String responseEntity = restTemplate.getForObject(uri, String.class);
         TypeReference<HashMap<String,Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
         try {
