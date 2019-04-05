@@ -41,6 +41,9 @@ public class RoomsMapper {
                 jsonFile = new File("rooms.json");
                 objectMapper.writeValue(jsonFile, classRooms);
             }
+            else{
+                objectMapper.writeValue(jsonFile, classRooms);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
