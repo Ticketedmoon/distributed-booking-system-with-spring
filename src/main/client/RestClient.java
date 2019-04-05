@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
@@ -7,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class RestClient {
 
@@ -43,9 +45,21 @@ public class RestClient {
 
 
     //TODO Im not sure which to use. Whats your experience? It seems webClient relies on our app being non-blocking
+    //So restTemplate might be safer assignment wise.
 
     static ObjectMapper restTemplateMapper = new ObjectMapper();
     static RestTemplate restTemplate = new RestTemplate();
+
+    public HashMap<String, Object> restTemplateGetAllRooms(){
+        String responseEntity = restTemplate.getForObject(uri, String.class);
+        TypeReference<HashMap<String,Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
+        try {
+            return mapper.readValue(responseEntity, typeRef);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public void restTemplateGetRoom(String room){
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri + room, String.class);
