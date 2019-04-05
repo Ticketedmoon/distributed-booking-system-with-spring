@@ -14,11 +14,17 @@ public class Rooms {
     }
 
     public Room getRoom(String roomName){
-        Room roominfo = rooms.get(roomName);
         return rooms.get(roomName);
     }
 
     public Object returnDay(String roomName, int dayOfWeek){
         return rooms.get(roomName).getDays()[dayOfWeek];
+    }
+
+    public HashMap <String, Room> updateBooking(String roomName, int dayOfWeek, String timeslot)
+    {
+        HashMap<String, Room> updatedRooms = rooms;
+        updatedRooms.get(roomName).getDays()[dayOfWeek].updateTimeSlotCapacity(timeslot);
+        return updatedRooms;
     }
 }

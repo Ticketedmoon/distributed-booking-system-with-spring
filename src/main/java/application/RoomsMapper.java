@@ -1,6 +1,7 @@
 package application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,5 +28,22 @@ public class RoomsMapper {
         Rooms classRooms = objectMapper.readValue(jsonFile, Rooms.class);
         logger.info(classRooms.toString());
         return classRooms;
+    }
+
+    public void writeJsonWithObjectMapper(Rooms classRooms) throws IOException
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        File jsonFile = new File("src/rooms.json");
+        try{
+
+            if(!jsonFile.exists()){
+                jsonFile = new File("rooms.json");
+                objectMapper.writeValue(jsonFile, classRooms);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

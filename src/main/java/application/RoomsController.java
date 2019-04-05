@@ -1,5 +1,6 @@
 package application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,20 @@ public class RoomsController {
     }
 
     //TODO PLACEHOLDER. IS GET FOR TESTING. When we have an input form client side we can use POST
+    //TODO What page do we want to load back to when the request is done?
     @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}/{time}")
     @ResponseBody
-    public String bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
-        return "Booked";
+    public HashMap<String, Room> bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
+        //TODO Protect
+        //TODO Logic for checking
+        RoomsMapper mapper = new RoomsMapper();
+        rooms.updateBooking(roomID,day,time);
+        try {
+            mapper.writeJsonWithObjectMapper(rooms);
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return rooms.getRooms();
     }
 }
