@@ -45,6 +45,7 @@ public class RestClient {
 
 
     //TODO Im not sure which to use. Whats your experience? It seems webClient relies on our app being non-blocking
+    // Shane: Never used either, ill do some research about it
     //So restTemplate might be safer assignment wise.
 
     static ObjectMapper restTemplateMapper = new ObjectMapper();
