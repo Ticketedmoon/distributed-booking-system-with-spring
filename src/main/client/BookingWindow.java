@@ -6,6 +6,12 @@ import java.util.Map;
 public class BookingWindow extends JFrame {
 
     private JButton show_rooms_button;
+
+    private JButton L221_button;
+    private JButton XG14_button;
+    private JButton T101_button;
+    private JButton CG04_button;
+
     private JButton test_button;
     private JButton help_button;
 
@@ -55,18 +61,20 @@ public class BookingWindow extends JFrame {
     private void createMenuButtons(){
         JPanel buttons = new JPanel(new GridLayout(0, 1, 50, 20));
         show_rooms_button = new JButton("All Rooms");
+        L221_button = new JButton("L221");
+        XG14_button = new JButton("XG14");
+        T101_button = new JButton("T101");
+        CG04_button = new JButton("CG04");
         test_button = new JButton("Test Mode");
         help_button = new JButton("Help");
-        JButton [] design_buttons = {show_rooms_button, test_button, help_button};
+        JButton [] design_buttons = {show_rooms_button, L221_button, XG14_button, T101_button, CG04_button,
+                test_button, help_button};
 
         for (JButton button : design_buttons) {
             button.setBackground(Color.lightGray);
             button.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
+            buttons.add(button);
         }
-
-        buttons.add(show_rooms_button);
-        buttons.add(test_button);
-        buttons.add(help_button);
 
         menu.add(buttons, BorderLayout.NORTH);
     }
@@ -92,18 +100,36 @@ public class BookingWindow extends JFrame {
             }
 
             // Set button colour
-            setActiveButtonColour(show_rooms_button, test_button, help_button);
+            setActiveButtonColour(show_rooms_button, L221_button, XG14_button, T101_button, CG04_button, test_button, help_button);
 
             // Build Table of Rooms
             build_room_table(data);
         });
 
+        // Individual Rooms
+        L221_button.addActionListener(e -> {
+            setActiveButtonColour(L221_button, test_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
+        });
+
+        XG14_button.addActionListener(e -> {
+            setActiveButtonColour(XG14_button, L221_button, help_button, T101_button, CG04_button, test_button, show_rooms_button);
+        });
+
+        T101_button.addActionListener(e -> {
+            setActiveButtonColour(T101_button, L221_button, XG14_button, test_button, CG04_button, show_rooms_button, help_button);
+        });
+
+        CG04_button.addActionListener(e -> {
+            setActiveButtonColour(CG04_button, L221_button, XG14_button, T101_button, help_button, test_button, show_rooms_button);
+        });
+
+        // Other Functions
         test_button.addActionListener(e -> {
-            setActiveButtonColour(test_button, show_rooms_button, help_button);
+            setActiveButtonColour(test_button, L221_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         help_button.addActionListener(e -> {
-            setActiveButtonColour(help_button, test_button, show_rooms_button);
+            setActiveButtonColour(help_button, L221_button, XG14_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
     }
@@ -119,11 +145,16 @@ public class BookingWindow extends JFrame {
     }
 
     // Note: Whatever button is passed first will be designated as the active one.
-    private void setActiveButtonColour(JButton active, JButton inactiveA, JButton inactiveB) {
+    private void setActiveButtonColour(JButton active, JButton inactiveA, JButton inactiveB,
+                                       JButton inactiveC, JButton inactiveD, JButton inactiveE, JButton inactiveF) {
         // Set button colour
         active.setBackground(Color.ORANGE);
         inactiveA.setBackground(Color.lightGray);
         inactiveB.setBackground(Color.lightGray);
+        inactiveC.setBackground(Color.lightGray);
+        inactiveD.setBackground(Color.lightGray);
+        inactiveE.setBackground(Color.lightGray);
+        inactiveF.setBackground(Color.lightGray);
     }
 
 }
