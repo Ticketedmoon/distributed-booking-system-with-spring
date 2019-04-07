@@ -57,9 +57,6 @@ public class RoomsController {
      * @param time
      * @return
      */
-    /* Todo: This seems a bit weird that this books based on the url name?
-     * Todo: It seems more logical that this would just tell you if the room is
-     * Todo: available at that specific day at that specific time. - what about /rooms/{roomID}/book/{day}/{time}?*/
     @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{roomID}/{day}/{time}")
     @ResponseBody
     public HashMap<String, Room> bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
