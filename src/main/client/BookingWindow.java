@@ -2,9 +2,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BookingWindow extends JFrame {
 
@@ -157,9 +156,9 @@ public class BookingWindow extends JFrame {
     }
     private void displayDaysAsTable(HashMap<String, Object> rooms) {
         ArrayList<HashMap<String, Object>> days =  (ArrayList<HashMap<String, Object>>) rooms.get("days");
-        HashMap<String, HashMap<String, Integer>> mappingDayToTimes = new HashMap<>();
+        LinkedHashMap<String, LinkedHashMap<String, Integer>> mappingDayToTimes = new LinkedHashMap<>();
         for(HashMap<String, Object> item : days) {
-            mappingDayToTimes.put((String) item.get("day"), (HashMap)item.get("timeslotCapacity"));
+            mappingDayToTimes.put((String) item.get("day"), (LinkedHashMap<String, Integer>) item.get("timeslotCapacity"));
         }
 
         screenTable = new JTable(toTableModel(mappingDayToTimes));
@@ -169,6 +168,9 @@ public class BookingWindow extends JFrame {
     private void updateTableView(JTable screenTable) {
         if (tableView != null)
             window.remove(tableView);
+
+        if (screenTable != null)
+            screenTable.setGridColor(Color.blue);
 
         tableView = new JScrollPane(screenTable);
         window.add(tableView);
@@ -188,12 +190,17 @@ public class BookingWindow extends JFrame {
         inactiveF.setBackground(Color.lightGray);
     }
 
-    public static TableModel toTableModel(Map<?,?> map) {
-        DefaultTableModel model = new DefaultTableModel(
-                new Object[] { "Key", "Value" }, 0
-        );
-        for (Map.Entry<?,?> entry : map.entrySet()) {
-            model.addRow(new Object[] { entry.getKey(), entry.getValue() });
+    public TableModel toTableModel(LinkedHashMap<String, LinkedHashMap<String, Integer>> map) {
+        ObjectMapper oMapper = new ObjectMapper();
+        DefaultTableModel model = new DefaultTableModel(map.keySet().toArray(), 5);
+        LinkedHashMap[] dayMap = oMapper.convertValue(map.values().toArray(), LinkedHashMap[].class);
+        int size = map.values().size();
+        for(int col = 0; col < size; col++) {
+            Object [] day_times = dayMap[col].keySet().toArray();
+            for(int row = 0; row < size-2; row++) {
+                String value = (String) day_times[row];
+                model.setValueAt(value, row, col);
+            }
         }
         return model;
     }
