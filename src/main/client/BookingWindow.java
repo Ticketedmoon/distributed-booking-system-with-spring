@@ -1,13 +1,7 @@
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +21,9 @@ public class BookingWindow extends JFrame {
     private JPanel menu;
     private JPanel window;
     private RestClient restClient;
-    private JTable screen_table;
+    private JTable screenTable;
+    private JScrollPane tableView;
+
 
     public BookingWindow(int sizeX, int sizeY) {
         super("University Room Booking System");
@@ -142,12 +138,10 @@ public class BookingWindow extends JFrame {
 
         // Other Functions
         test_button.addActionListener(e -> {
-            screen_table.hide();
             setActiveButtonColour(test_button, L221_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         help_button.addActionListener(e -> {
-            screen_table.hide();
             setActiveButtonColour(help_button, L221_button, XG14_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
@@ -155,11 +149,8 @@ public class BookingWindow extends JFrame {
 
     private void build_table(Object[][] data, String [] columnNames) {
         //create table with data
-        screen_table = new JTable(data, columnNames);
-
-        //add the table to the frame
-        window.add(new JScrollPane(screen_table));
-        setVisible(true);
+        screenTable = new JTable(data, columnNames);
+        updateTableView(screenTable);
 
     }
     private void displayDaysAsTable(HashMap<String, Object> rooms) {
@@ -169,12 +160,17 @@ public class BookingWindow extends JFrame {
             mappingDayToTimes.put((String) item.get("day"), (HashMap)item.get("timeslotCapacity"));
         }
 
-        screen_table =new JTable(toTableModel(mappingDayToTimes));
+        screenTable = new JTable(toTableModel(mappingDayToTimes));
+        updateTableView(screenTable);
+    }
 
-        //add the table to the frame
-        window.add(new JScrollPane(screen_table));
-        setVisible(true);
+    private void updateTableView(JTable screenTable) {
+        if (tableView != null)
+            window.remove(tableView);
 
+        tableView = new JScrollPane(screenTable);
+        window.add(tableView);
+        window.updateUI(); // @Shaun - This was the 'flush' method we were looking for
     }
 
     // Note: Whatever button is passed first will be designated as the active one.
