@@ -1,9 +1,7 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
-import java.util.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BookingWindow extends JFrame {
 
@@ -20,26 +18,25 @@ public class BookingWindow extends JFrame {
     private JPanel menu;
     private JPanel window;
     private RestClient restClient;
-    private JTable screenTable;
-    private JScrollPane tableView;
-
+    private TableView viewableTable;
 
     public BookingWindow(int sizeX, int sizeY) {
         super("University Room Booking System");
 
         // Spawn the RestClient before anything happens - more efficient for loading.
         try {
-            restClient = new RestClient();
-        }
-        finally {
             this.setSize(sizeX, sizeY);
-            this.setVisible(true);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
 
+            restClient = new RestClient();
+        }
+        finally {
             this.menu = new JPanel(new BorderLayout());
             this.window = new JPanel(new BorderLayout());
-            getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.lightGray));
+            this.viewableTable = new TableView();
+            this.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.lightGray));
+            this.setVisible(true);
         }
     }
 
@@ -107,74 +104,49 @@ public class BookingWindow extends JFrame {
             setActiveButtonColour(show_rooms_button, L221_button, XG14_button, T101_button, CG04_button, test_button, help_button);
 
             // Build Table of Rooms
-            build_table(data, columnNames);
+            viewableTable.build_table(data, columnNames, window);
         });
 
         // Individual Rooms
         L221_button.addActionListener(e -> {
             HashMap<String, Object> rooms = restClient.restTemplateGetRoom("L221");
-            displayDaysAsTable(rooms);
+            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(L221_button, test_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         XG14_button.addActionListener(e -> {
             HashMap<String, Object> rooms = restClient.restTemplateGetRoom("XG14");
-            displayDaysAsTable(rooms);
+            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(XG14_button, L221_button, help_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
         T101_button.addActionListener(e -> {
             HashMap<String, Object> rooms = restClient.restTemplateGetRoom("T101");
-            displayDaysAsTable(rooms);
+            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(T101_button, L221_button, XG14_button, test_button, CG04_button, show_rooms_button, help_button);
         });
 
         CG04_button.addActionListener(e -> {
             HashMap<String, Object> rooms = restClient.restTemplateGetRoom("CG04");
-            displayDaysAsTable(rooms);
+            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(CG04_button, L221_button, XG14_button, T101_button, help_button, test_button, show_rooms_button);
         });
 
         // Other Functions
         test_button.addActionListener(e -> {
-            updateTableView(null);
+            viewableTable.updateTableView(null, window);
             setActiveButtonColour(test_button, L221_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         help_button.addActionListener(e -> {
-            updateTableView(null);
+            viewableTable.updateTableView(null, window);
             setActiveButtonColour(help_button, L221_button, XG14_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
-    }
-
-    private void build_table(Object[][] data, String [] columnNames) {
-        //create table with data
-        screenTable = new JTable(data, columnNames);
-        updateTableView(screenTable);
-
-    }
-    private void displayDaysAsTable(HashMap<String, Object> rooms) {
-        ArrayList<HashMap<String, Object>> days =  (ArrayList<HashMap<String, Object>>) rooms.get("days");
-        LinkedHashMap<String, LinkedHashMap<String, Integer>> mappingDayToTimes = new LinkedHashMap<>();
-        for(HashMap<String, Object> item : days) {
-            mappingDayToTimes.put((String) item.get("day"), (LinkedHashMap<String, Integer>) item.get("timeslotCapacity"));
-        }
-
-        screenTable = new JTable(toTableModel(mappingDayToTimes));
-        updateTableView(screenTable);
-    }
-
-    private void updateTableView(JTable screenTable) {
-        if (tableView != null)
-            window.remove(tableView);
-
-        if (screenTable != null)
-            screenTable.setGridColor(Color.blue);
-
-        tableView = new JScrollPane(screenTable);
-        window.add(tableView);
-        window.updateUI(); // @Shaun - This was the 'flush' method we were looking for
     }
 
     // Note: Whatever button is passed first will be designated as the active one.
@@ -189,20 +161,4 @@ public class BookingWindow extends JFrame {
         inactiveE.setBackground(Color.lightGray);
         inactiveF.setBackground(Color.lightGray);
     }
-
-    public TableModel toTableModel(LinkedHashMap<String, LinkedHashMap<String, Integer>> map) {
-        ObjectMapper oMapper = new ObjectMapper();
-        DefaultTableModel model = new DefaultTableModel(map.keySet().toArray(), 5);
-        LinkedHashMap[] dayMap = oMapper.convertValue(map.values().toArray(), LinkedHashMap[].class);
-        int size = map.values().size();
-        for(int col = 0; col < size; col++) {
-            Object [] day_times = dayMap[col].keySet().toArray();
-            for(int row = 0; row < size-2; row++) {
-                String value = (String) day_times[row];
-                model.setValueAt(value, row, col);
-            }
-        }
-        return model;
-    }
-
 }
