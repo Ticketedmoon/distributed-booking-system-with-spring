@@ -44,6 +44,11 @@
             <version>4.1.16.Final</version>
             <classifier>linux-x86_64</classifier>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
+        </dependency>
     </dependencies>
 
     <properties>

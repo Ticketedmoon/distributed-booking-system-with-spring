@@ -1,6 +1,8 @@
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -8,7 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class RestClient {
 
@@ -62,16 +66,16 @@ public class RestClient {
         return null;
     }
 
-    public void restTemplateGetRoom(String room){
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri + room, String.class);
-        //TODO Debugger.
+    // Note: Same as method above but has room parameter.
+    public HashMap<String, Object> restTemplateGetRoom(String room) {
+        String responseEntity = restTemplate.getForObject(uri + room, String.class);
+        TypeReference<HashMap<String,Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
         try {
-            JsonNode putRoot = mapper.readTree(responseEntity.getBody());
-            String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(putRoot);
-            System.out.println(indented);
-        }catch (IOException e){
+            return mapper.readValue(responseEntity, typeRef);
+        } catch(IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 

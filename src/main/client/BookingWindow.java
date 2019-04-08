@@ -1,5 +1,14 @@
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +27,7 @@ public class BookingWindow extends JFrame {
     private JPanel menu;
     private JPanel window;
     private RestClient restClient;
-
-    private String[] columnNames = { "Rooms", "Capacity"};
+    private JTable screen_table;
 
     public BookingWindow(int sizeX, int sizeY) {
         super("University Room Booking System");
@@ -88,6 +96,7 @@ public class BookingWindow extends JFrame {
             int room_count = 0;
             HashMap<String, HashMap<String, Object>> rooms = restClient.restTemplateGetAllRooms();
             Object[][] data = new Object[rooms.size()][2];
+            String[] columnNames = { "Rooms", "Capacity"};
 
             // Had to remove your ForEach Nice loop thing for the sake of this table
             for(Map.Entry entry : rooms.entrySet()) {
@@ -103,43 +112,67 @@ public class BookingWindow extends JFrame {
             setActiveButtonColour(show_rooms_button, L221_button, XG14_button, T101_button, CG04_button, test_button, help_button);
 
             // Build Table of Rooms
-            build_room_table(data);
+            build_table(data, columnNames);
         });
 
         // Individual Rooms
         L221_button.addActionListener(e -> {
+            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("L221");
+            displayDaysAsTable(rooms);
             setActiveButtonColour(L221_button, test_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         XG14_button.addActionListener(e -> {
+            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("XG14");
+            displayDaysAsTable(rooms);
             setActiveButtonColour(XG14_button, L221_button, help_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
         T101_button.addActionListener(e -> {
+            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("T101");
+            displayDaysAsTable(rooms);
             setActiveButtonColour(T101_button, L221_button, XG14_button, test_button, CG04_button, show_rooms_button, help_button);
         });
 
         CG04_button.addActionListener(e -> {
+            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("CG04");
+            displayDaysAsTable(rooms);
             setActiveButtonColour(CG04_button, L221_button, XG14_button, T101_button, help_button, test_button, show_rooms_button);
         });
 
         // Other Functions
         test_button.addActionListener(e -> {
+            screen_table.hide();
             setActiveButtonColour(test_button, L221_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         help_button.addActionListener(e -> {
+            screen_table.hide();
             setActiveButtonColour(help_button, L221_button, XG14_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
     }
 
-    private void build_room_table(Object[][] data) {
+    private void build_table(Object[][] data, String [] columnNames) {
         //create table with data
-        JTable table = new JTable(data, columnNames);
+        screen_table = new JTable(data, columnNames);
 
         //add the table to the frame
-        window.add(new JScrollPane(table));
+        window.add(new JScrollPane(screen_table));
+        setVisible(true);
+
+    }
+    private void displayDaysAsTable(HashMap<String, Object> rooms) {
+        ArrayList<HashMap<String, Object>> days =  (ArrayList<HashMap<String, Object>>) rooms.get("days");
+        HashMap<String, HashMap<String, Integer>> mappingDayToTimes = new HashMap<>();
+        for(HashMap<String, Object> item : days) {
+            mappingDayToTimes.put((String) item.get("day"), (HashMap)item.get("timeslotCapacity"));
+        }
+
+        screen_table =new JTable(toTableModel(mappingDayToTimes));
+
+        //add the table to the frame
+        window.add(new JScrollPane(screen_table));
         setVisible(true);
 
     }
@@ -155,6 +188,16 @@ public class BookingWindow extends JFrame {
         inactiveD.setBackground(Color.lightGray);
         inactiveE.setBackground(Color.lightGray);
         inactiveF.setBackground(Color.lightGray);
+    }
+
+    public static TableModel toTableModel(Map<?,?> map) {
+        DefaultTableModel model = new DefaultTableModel(
+                new Object[] { "Key", "Value" }, 0
+        );
+        for (Map.Entry<?,?> entry : map.entrySet()) {
+            model.addRow(new Object[] { entry.getKey(), entry.getValue() });
+        }
+        return model;
     }
 
 }
