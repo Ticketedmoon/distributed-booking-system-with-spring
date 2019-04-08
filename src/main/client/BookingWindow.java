@@ -138,10 +138,12 @@ public class BookingWindow extends JFrame {
 
         // Other Functions
         test_button.addActionListener(e -> {
+            updateTableView(null);
             setActiveButtonColour(test_button, L221_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         help_button.addActionListener(e -> {
+            updateTableView(null);
             setActiveButtonColour(help_button, L221_button, XG14_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
