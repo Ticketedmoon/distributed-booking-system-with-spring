@@ -56,7 +56,7 @@ public class BookingWindow extends JFrame {
 
     private void createCentreWindow() {
         window.setLayout ( new BorderLayout() );
-        window.setPreferredSize(new Dimension(1000, 40));
+        window.setPreferredSize(new Dimension(1050, 40));
         window.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.gray));
     }
 
