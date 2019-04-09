@@ -1,6 +1,7 @@
 package application;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,8 +51,6 @@ public class RoomsController {
         return null;
     }
 
-    //TODO revisit converting to map instead of arrays.
-
     /**
      * Filter by roomID and day to return the timetable for that entire day.
      * @param roomID
@@ -83,13 +82,14 @@ public class RoomsController {
      * @return
      */
     @Async
-    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{roomID}/{day}/{time}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{roomID}/{day}/{time}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CompletableFuture<Room> bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
-        //TODO Protect
-        //TODO Logic for checking
+    public CompletableFuture<Room> bookDay(@RequestBody String bookingRequest,
+                                           @PathVariable String roomID,
+                                           @PathVariable int day,
+                                           @PathVariable String time){
         RoomsMapper mapper = new RoomsMapper();
-        rooms.updateBooking(roomID,day,time);
+        rooms.updateBooking(roomID,day,time, bookingRequest);
         mapper.writeJsonWithObjectMapper(rooms);
         return CompletableFuture.completedFuture(rooms.getRoom(roomID));
     }

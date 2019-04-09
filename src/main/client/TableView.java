@@ -6,7 +6,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -138,14 +137,14 @@ public class TableView {
         if (response == JOptionPane.NO_OPTION) {
             JOptionPane.showMessageDialog(null, "Room not booked");
             System.out.println("Room Not Booked - No option selected");
-            if(restClient.restTemplateRoomAvailableAtTime(roomName,col,timePeriod))
+            if(restClient.roomAvailableAtTime(roomName,col,timePeriod))
                 renderer.setCellColour(row, col, Color.green);
             else
                 renderer.setCellColour(row,col, Color.red);
 
         } else if (response == JOptionPane.YES_OPTION) {
-            if (restClient.restTemplateRoomAvailableAtTime(roomName, col, timePeriod)) {
-                restClient.restTemplateBookRoom(roomName, col, timePeriod);
+            if (restClient.roomAvailableAtTime(roomName, col, timePeriod)) {
+                restClient.bookRoom(roomName, col, timePeriod);
                 renderer.setCellColour(row, col, Color.green);
 
                 JOptionPane.showMessageDialog(null, String.format("Room %s booked for time %s \n ",
@@ -159,7 +158,7 @@ public class TableView {
             }
 
             // If after we book the room is full | I.E there are no more slots left, then colour becomes red...
-            if (!restClient.restTemplateRoomAvailableAtTime(roomName, col, timePeriod)) {
+            if (!restClient.roomAvailableAtTime(roomName, col, timePeriod)) {
                 System.out.println(String.format("Room with ID %s for time period %s fully booked!", roomName, timePeriod));
                 renderer.setCellColour(row, col, Color.red);
             }
