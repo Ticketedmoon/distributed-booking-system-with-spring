@@ -33,7 +33,10 @@ public class TableView {
         }
 
         JTable table = new JTable(toTableModel(mappingDayToTimes));
-
+        for(int i = 0; i < days.size(); i ++)
+        {
+            table.getColumnModel().getColumn(i).setPreferredWidth(100);
+        }
         setTableColourByTimeAvailability(table, mappingDayToTimes);
         addTableMouseListener(table);
         return table;
@@ -67,7 +70,7 @@ public class TableView {
             Object [] day_times = dayMap[col].keySet().toArray();
             Object [] day_capacities = dayMap[col].values().toArray();
             for(int row = 0; row < size-2; row++) {
-                String value = String.format("Time: %s", day_times[row]);
+                String value = String.format("Time: %s, Slots: %s", day_times[row], day_capacities[row]);
                 model.setValueAt(value, row, col);
             }
         }
@@ -109,7 +112,8 @@ public class TableView {
 
                 System.out.println(String.format("Cell-Row: %d - Cell-Column %d", row, col));
 
-                String timePeriod = ((String) table.getValueAt(row, col)).substring(5);
+                String timePeriod = ((String) table.getValueAt(row, col)).substring(5).split(",")[0];
+
                 System.out.println(timePeriod);
 
                 // Note: Cell turns orange when selected
