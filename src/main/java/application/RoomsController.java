@@ -64,12 +64,20 @@ public class RoomsController {
         //TODO Logic for checking
         RoomsMapper mapper = new RoomsMapper();
         rooms.updateBooking(roomID,day,time);
-        try {
-            mapper.writeJsonWithObjectMapper(rooms);
-        }catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        mapper.writeJsonWithObjectMapper(rooms);
+
         return rooms.getRooms();
     }
+
+    /**
+     * Returns the if a room is availabe.
+     * @return Booleam
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}/{time}")
+    @ResponseBody
+    public boolean roomAvailableAtSpecificTime(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
+        return rooms.getRoom(roomID).getDays().get(day).getTimeSlotCapacityForDay(time) > 0;
+    }
 }
+
+

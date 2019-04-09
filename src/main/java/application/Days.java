@@ -33,4 +33,8 @@ public class Days {
         newTimeslots.get(timeslot).getAndDecrement();
         return newTimeslots;
     }
+
+    public int getTimeSlotCapacityForDay(String timeSlot) {
+        return timeslotCapacity.get(timeSlot).get();
+    }
 }

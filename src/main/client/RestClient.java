@@ -1,8 +1,5 @@
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -10,9 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class RestClient {
 
@@ -79,6 +74,17 @@ public class RestClient {
     }
 
 
+    public boolean restTemplateRoomAvailableAtTime(String room, int day, String time) {
+        String responseEntity = restTemplate.getForObject(uri + room + "/" + day + "/" + time, String.class);
+        TypeReference<Boolean> typeRef = new TypeReference<Boolean>() {};
+        try {
+            return mapper.readValue(responseEntity, typeRef);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void restTemplateBookRoom(String room, int day, String timeslot){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -88,8 +94,10 @@ public class RestClient {
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(map, headers);
 
         String putResource = uri + room + "/" + day + "/" + timeslot;
+
         //TODO get proper response format
-        ResponseEntity<String> responseEntity1 = restTemplate.exchange(putResource, HttpMethod.PUT, request, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(putResource, HttpMethod.PUT, request, String.class);
+        System.out.println(responseEntity.getBody());
         //TODO just for debugging.
        /* try{
             JsonNode putRoot = mapper.readTree(responseEntity1.getBody());

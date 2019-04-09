@@ -1,11 +1,12 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Room {
 
     private AtomicInteger capacity;
-    private Days [] days;
+    private ArrayList<Days> days;
 
     public int getCapacity(){
         return capacity.get();
@@ -15,7 +16,7 @@ public class Room {
         this.capacity = capacity;
     }
 
-    public Days [] getDays(){
+    public ArrayList<Days> getDays(){
         return days;
     }
 

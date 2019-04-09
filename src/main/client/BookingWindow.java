@@ -3,15 +3,17 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+// Todo: Help screen should be the default screen when the application is open.
+// Todo: This screen provides instructions on how to use the application.
+// Todo: Additionally, A colour code/legend might be useful on each Room tab at the bottom in the empty white space.
+// Todo: I.E. Green = Available, Red = Unavailable
 public class BookingWindow extends JFrame {
 
     private JButton show_rooms_button;
-
     private JButton L221_button;
     private JButton XG14_button;
     private JButton T101_button;
     private JButton CG04_button;
-
     private JButton test_button;
     private JButton help_button;
 
@@ -34,8 +36,8 @@ public class BookingWindow extends JFrame {
         finally {
             this.menu = new JPanel(new BorderLayout());
             this.window = new JPanel(new BorderLayout());
-            this.viewableTable = new TableView();
-            this.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.lightGray));
+            this.viewableTable = new TableView(restClient);
+            this.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.lightGray));
             this.setVisible(true);
         }
     }
@@ -54,8 +56,8 @@ public class BookingWindow extends JFrame {
 
     private void createCentreWindow() {
         window.setLayout ( new BorderLayout() );
-        window.setPreferredSize(new Dimension(675, 40));
-        window.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
+        window.setPreferredSize(new Dimension(900, 40));
+        window.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.gray));
     }
 
     private void createMenuButtons(){
@@ -95,9 +97,6 @@ public class BookingWindow extends JFrame {
                 data[room_count][0] = entry.getKey();
                 data[room_count][1] = ((HashMap) entry.getValue()).get("capacity");
                 room_count++;
-
-                System.out.println(entry.getKey());
-                System.out.println(((HashMap) entry.getValue()).get("capacity"));
             }
 
             // Set button colour
@@ -109,29 +108,34 @@ public class BookingWindow extends JFrame {
 
         // Individual Rooms
         L221_button.addActionListener(e -> {
-            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("L221");
-            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("L221");
+            viewableTable.setRoomName("L221");
+            JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(L221_button, test_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
         XG14_button.addActionListener(e -> {
-            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("XG14");
-            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("XG14");
+            viewableTable.setRoomName("XG14");
+            JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(XG14_button, L221_button, help_button, T101_button, CG04_button, test_button, show_rooms_button);
         });
 
         T101_button.addActionListener(e -> {
-            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("T101");
-            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("T101");
+            viewableTable.setRoomName("T101");
+
+            JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(T101_button, L221_button, XG14_button, test_button, CG04_button, show_rooms_button, help_button);
         });
 
         CG04_button.addActionListener(e -> {
-            HashMap<String, Object> rooms = restClient.restTemplateGetRoom("CG04");
-            JTable screenTable = viewableTable.getNewTableDisplay(rooms);
+            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("CG04");
+            viewableTable.setRoomName("CG04");
+            JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(CG04_button, L221_button, XG14_button, T101_button, help_button, test_button, show_rooms_button);
         });

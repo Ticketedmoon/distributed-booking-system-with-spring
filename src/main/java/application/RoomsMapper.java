@@ -30,7 +30,7 @@ public class RoomsMapper {
         return classRooms;
     }
 
-    public void writeJsonWithObjectMapper(Rooms classRooms) throws IOException
+    public void writeJsonWithObjectMapper(Rooms classRooms)
     {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
