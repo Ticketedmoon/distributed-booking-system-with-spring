@@ -1,7 +1,7 @@
 public class Launcher {
 
     public static void launch() {
-        BookingWindow  bookingWindow = new BookingWindow(1000, 500);
+        BookingWindow  bookingWindow = new BookingWindow(1200, 500);
         bookingWindow.initialize();
     }
 
