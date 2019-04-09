@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class RestClient {
-    private UUID clientnumber = UUID.randomUUID();
-
     private static ObjectMapper mapper = new ObjectMapper();
     //TODO change to vm ip or add logic to choose between.
     private static String uri = "http://localhost:8080/rooms/";
@@ -56,7 +54,7 @@ public class RestClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add(clientnumber.toString(),room + "," + day + "," + timeslot);
+        map.add(UUID.randomUUID().toString(),room + "," + day + "," + timeslot);
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(map, headers);
 
         String putResource = uri + room + "/" + day + "/" + timeslot;
