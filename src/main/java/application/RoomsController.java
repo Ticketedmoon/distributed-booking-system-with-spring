@@ -1,5 +1,6 @@
 package application;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ public class RoomsController {
 
     @Autowired
     private Rooms rooms;
-
+    RoomsMapper mapper = new RoomsMapper();
     /**
      * Returns the entire week timetable for each room in the application.
      * @return
@@ -19,7 +20,14 @@ public class RoomsController {
     @RequestMapping(method = RequestMethod.GET, value={"/","/rooms"})
     @ResponseBody
     public HashMap<String, Room> returnAllRooms(){
-        return rooms.getRooms();
+        try{
+            rooms = mapper.readJsonWithObjectMapper();
+            return rooms.getRooms();
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -30,7 +38,13 @@ public class RoomsController {
     @RequestMapping(method = RequestMethod.GET, value ="/rooms/{roomID}")
     @ResponseBody
     public Room returnRoom(@PathVariable String roomID){
-        return rooms.getRoom(roomID);
+        try{
+            rooms = mapper.readJsonWithObjectMapper();
+            return rooms.getRoom(roomID);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //TODO revisit converting to map instead of arrays.
@@ -44,7 +58,14 @@ public class RoomsController {
     @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}")
     @ResponseBody
     public Object returnDay(@PathVariable String roomID,@PathVariable int day){
-        return rooms.returnDay(roomID, day);
+        try {
+            rooms = mapper.readJsonWithObjectMapper();
+            return rooms.returnDay(roomID, day);
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
