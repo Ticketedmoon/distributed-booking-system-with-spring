@@ -136,6 +136,7 @@ public class TableView {
                 String.format("Confirm Room Booking for Room %s at %s", roomName, timePeriod), "Booking Confirmation",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.NO_OPTION) {
+            JOptionPane.showMessageDialog(null, "Room not booked");
             System.out.println("Room Not Booked - No option selected");
             if(restClient.restTemplateRoomAvailableAtTime(roomName,col,timePeriod))
                 renderer.setCellColour(row, col, Color.green);
@@ -146,7 +147,14 @@ public class TableView {
             if (restClient.restTemplateRoomAvailableAtTime(roomName, col, timePeriod)) {
                 restClient.restTemplateBookRoom(roomName, col, timePeriod);
                 renderer.setCellColour(row, col, Color.green);
+                JOptionPane.showMessageDialog(null, String.format("Room %s booked for time %s \n ",
+                        roomName,timePeriod));
                 System.out.println(String.format("Room with ID %s Booked for time period %s", roomName, timePeriod));
+            }
+            else {
+                renderer.setCellColour(row, col, Color.red);
+                JOptionPane.showMessageDialog(null, String.format("Room %s is fully booked at time %s \n " +
+                        "Please select another room or time", roomName,timePeriod));
             }
 
             // If after we book the room is full | I.E there are no more slots left, then colour becomes red...
