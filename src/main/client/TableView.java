@@ -147,6 +147,7 @@ public class TableView {
             if (restClient.restTemplateRoomAvailableAtTime(roomName, col, timePeriod)) {
                 restClient.restTemplateBookRoom(roomName, col, timePeriod);
                 renderer.setCellColour(row, col, Color.green);
+
                 JOptionPane.showMessageDialog(null, String.format("Room %s booked for time %s \n ",
                         roomName,timePeriod));
                 System.out.println(String.format("Room with ID %s Booked for time period %s", roomName, timePeriod));
