@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -136,7 +137,11 @@ public class TableView {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.NO_OPTION) {
             System.out.println("Room Not Booked - No option selected");
-            renderer.setCellColour(row, col, Color.green);
+            if(restClient.restTemplateRoomAvailableAtTime(roomName,col,timePeriod))
+                renderer.setCellColour(row, col, Color.green);
+            else
+                renderer.setCellColour(row,col, Color.red);
+
         } else if (response == JOptionPane.YES_OPTION) {
             if (restClient.restTemplateRoomAvailableAtTime(roomName, col, timePeriod)) {
                 restClient.restTemplateBookRoom(roomName, col, timePeriod);
