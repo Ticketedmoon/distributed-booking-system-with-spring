@@ -25,7 +25,6 @@ public class RoomsMapper {
             e.printStackTrace();
         }
         Rooms classRooms = objectMapper.readValue(jsonFile, Rooms.class);
-        logger.info(classRooms.toString());
         return classRooms;
     }
 
@@ -41,7 +40,7 @@ public class RoomsMapper {
                 objectMapper.writeValue(jsonFile, classRooms);
             }
             else{
-                objectMapper.writeValue(jsonFile, classRooms);
+                objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, classRooms);
             }
         }catch (Exception e){
             e.printStackTrace();
