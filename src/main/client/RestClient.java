@@ -15,39 +15,6 @@ public class RestClient {
     //TODO change to vm ip or add logic to choose between.
     private static String uri = "http://localhost:8080/rooms/";
 
-    //https://springframework.guru/spring-5-webclient/
-    private final WebClient webClient;
-    //TODO I think everything leave everything with webclient tbh.
-    public RestClient(){
-        this.webClient = WebClient.builder()
-                .baseUrl(uri)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-    }
-
-    public String getRoomTimetable(String room){
-        return webClient.get()
-                .uri(room)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-    public String bookRoom(String room, int day, String timeslot){
-        return webClient.put()
-                .uri(uri + room + "/" + day + "/" + timeslot)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-
-
-    //TODO Im not sure which to use. Whats your experience? It seems webClient relies on our app being non-blocking
-    // Shane: Never used either, ill do some research about it
-    //So restTemplate might be safer assignment wise.
-
-    static ObjectMapper restTemplateMapper = new ObjectMapper();
     static RestTemplate restTemplate = new RestTemplate();
 
     public HashMap<String, HashMap<String, Object>> restTemplateGetAllRooms(){
