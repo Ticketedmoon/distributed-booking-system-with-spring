@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 public class Rooms {
     private HashMap <String, Room> rooms;
-
     public HashMap<String, Room> getRooms(){
         return rooms;
     }
