@@ -14,7 +14,6 @@ public class RestClient {
     private static ObjectMapper mapper = new ObjectMapper();
     //TODO change to vm ip or add logic to choose between.
     private static String uri = "http://localhost:8080/rooms/";
-
     static RestTemplate restTemplate = new RestTemplate();
 
     public HashMap<String, HashMap<String, Object>> restTemplateGetAllRooms(){
@@ -52,7 +51,7 @@ public class RestClient {
         return false;
     }
 
-    public void restTemplateBookRoom(String room, int day, String timeslot){
+    public HashMap<String, Object> restTemplateBookRoom(String room, int day, String timeslot){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -64,7 +63,16 @@ public class RestClient {
 
         //TODO get proper response format
         ResponseEntity<String> responseEntity = restTemplate.exchange(putResource, HttpMethod.PUT, request, String.class);
+        TypeReference<HashMap<String,Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
+        try {
+            return mapper.readValue(responseEntity.getBody(), typeRef);
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         System.out.println(responseEntity.getBody());
+        return null;
+
         //TODO just for debugging.
        /* try{
             JsonNode putRoot = mapper.readTree(responseEntity1.getBody());

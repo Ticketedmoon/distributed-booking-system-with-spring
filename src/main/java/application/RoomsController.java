@@ -80,14 +80,13 @@ public class RoomsController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{roomID}/{day}/{time}")
     @ResponseBody
-    public HashMap<String, Room> bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
+    public Room bookDay(@PathVariable String roomID, @PathVariable int day, @PathVariable String time){
         //TODO Protect
         //TODO Logic for checking
         RoomsMapper mapper = new RoomsMapper();
         rooms.updateBooking(roomID,day,time);
         mapper.writeJsonWithObjectMapper(rooms);
-
-        return rooms.getRooms();
+        return rooms.getRoom(roomID);
     }
 
     /**
