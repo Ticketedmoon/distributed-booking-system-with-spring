@@ -88,7 +88,7 @@ public class BookingWindow extends JFrame {
         // Show All Rooms Button Listener
         show_rooms_button.addActionListener(e -> {
             int room_count = 0;
-            HashMap<String, HashMap<String, Object>> rooms = restClient.restTemplateGetAllRooms();
+            HashMap<String, HashMap<String, Object>> rooms = restClient.getAllRooms();
             Object[][] data = new Object[rooms.size()][2];
             String[] columnNames = { "Rooms", "Capacity"};
 
@@ -108,7 +108,7 @@ public class BookingWindow extends JFrame {
 
         // Individual Rooms
         L221_button.addActionListener(e -> {
-            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("L221");
+            HashMap<String, Object> room_details = restClient.getRoom("L221");
             viewableTable.setRoomName("L221");
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
@@ -116,7 +116,7 @@ public class BookingWindow extends JFrame {
         });
 
         XG14_button.addActionListener(e -> {
-            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("XG14");
+            HashMap<String, Object> room_details = restClient.getRoom("XG14");
             viewableTable.setRoomName("XG14");
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
@@ -124,7 +124,7 @@ public class BookingWindow extends JFrame {
         });
 
         T101_button.addActionListener(e -> {
-            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("T101");
+            HashMap<String, Object> room_details = restClient.getRoom("T101");
             viewableTable.setRoomName("T101");
 
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
@@ -133,7 +133,7 @@ public class BookingWindow extends JFrame {
         });
 
         CG04_button.addActionListener(e -> {
-            HashMap<String, Object> room_details = restClient.restTemplateGetRoom("CG04");
+            HashMap<String, Object> room_details = restClient.getRoom("CG04");
             viewableTable.setRoomName("CG04");
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
