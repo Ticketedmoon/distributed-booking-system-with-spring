@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.annotation.PostConstruct;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -28,7 +27,6 @@ public class TableView {
         JDialog.setDefaultLookAndFeelDecorated(true);
     }
 
-    @PostConstruct
     public JTable getNewTableDisplay(HashMap<String, Object> rooms) {
         ArrayList<HashMap<String, Object>> days =  (ArrayList<HashMap<String, Object>>) rooms.get("days");
         LinkedHashMap<String, LinkedHashMap<String, Integer>> mappingDayToTimes = new LinkedHashMap<>();
@@ -82,7 +80,7 @@ public class TableView {
         return model;
     }
 
-    public void build_table(Object[][] data, String [] columnNames, JPanel window) {
+    public void build_table(Object[][] data, Object [] columnNames, JPanel window) {
         //create table with data
         currentTable = new JTable(data, columnNames);
         updateTableView(currentTable, window);
