@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 @RestController
 public class RoomsController {
@@ -15,6 +16,7 @@ public class RoomsController {
     @Autowired
     private Rooms rooms;
     private RoomsMapper mapper = new RoomsMapper();
+    private static final Logger LOGGER = Logger.getLogger(RoomsController.class.getName());
     /**
      * Returns the entire week timetable for each room in the application.
      * @return
@@ -89,8 +91,9 @@ public class RoomsController {
                                            @PathVariable int day,
                                            @PathVariable String time){
         RoomsMapper mapper = new RoomsMapper();
-        rooms.updateBooking(roomID,day,time, bookingRequest);
+        rooms.updateBooking(roomID,day,time);
         mapper.writeJsonWithObjectMapper(rooms);
+        LOGGER.info(bookingRequest);
 
         return CompletableFuture.completedFuture(rooms.getRoom(roomID));
     }

@@ -10,7 +10,7 @@ public class ClientRequestFactory {
     private AtomicInteger startAmountClients;
     private ScheduledExecutorService clientExecutor;
     private String [] rooms = {"L221", "CG04", "T101", "XG14"};
-    private String [] timeSlots = {"9-10", "10-11", "11-12", "12-1"};
+    private String [] timeSlots = {"9-10", "10-11", "11-12", "12-1", "1-2"};
     private ArrayList<ClientRequests> bookingRequests;
 
     public ClientRequestFactory(int amountClients){
@@ -18,11 +18,11 @@ public class ClientRequestFactory {
     }
 
     private ClientRequests generateClientRequest(){
-        //String room = rooms[ThreadLocalRandom.current().nextInt(0,3 + 1)];
-        //int day = ThreadLocalRandom.current().nextInt(1,6 + 1);
-        String room = rooms[0];
-        int day = 0;
-        String timeSlot = timeSlots[ThreadLocalRandom.current().nextInt(0, 3 + 1)];
+        String room = rooms[ThreadLocalRandom.current().nextInt(0,4)];
+        int day = ThreadLocalRandom.current().nextInt(1,7);
+       // String room = rooms[0];
+       // int day = 0;
+        String timeSlot = timeSlots[ThreadLocalRandom.current().nextInt(0, 5)];
         int requestTime = ThreadLocalRandom.current().nextInt(1, 20 +1);
 
         return new ClientRequests(room, day, timeSlot, requestTime);

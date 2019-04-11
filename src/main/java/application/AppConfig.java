@@ -34,7 +34,7 @@ public class AppConfig {
         executor.setThreadNamePrefix("Request-");
         executor.setCorePoolSize(4);
         executor.setMaxPoolSize(4);
-        executor.setQueueCapacity(100);
+        executor.setQueueCapacity(500);
         executor.initialize();
         return executor;
     }
