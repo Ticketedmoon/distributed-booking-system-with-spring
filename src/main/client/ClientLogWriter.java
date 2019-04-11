@@ -6,23 +6,22 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class LogWriter {
+public class ClientLogWriter {
 
     private FileHandler fh;
 
-    public LogWriter(){
+    public ClientLogWriter(){
 
         Logger clientRequests = Logger.getLogger(ClientRequests.class.getName());
 
 
         try {
-            // Reset file 'output.dat' in case of previous written fragments.
-            PrintWriter writer = new PrintWriter("./output.dat");
+            PrintWriter writer = new PrintWriter("./clientOutput.dat");
             writer.print("");
             writer.close();
 
             // Write to file in desired format.
-            fh = new FileHandler("output.dat", false);
+            fh = new FileHandler("clientOutput.dat", false);
             fh.setFormatter(new SimpleFormatter() {
                 @Override
                 public synchronized String format(LogRecord lr) {

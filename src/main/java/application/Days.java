@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Days {
 
     private String day;
-    //private int [] timeslotCapacity;
     private ConcurrentHashMap <String, AtomicInteger> timeslotCapacity;
 
     public String getDay(){

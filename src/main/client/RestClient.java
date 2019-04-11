@@ -7,13 +7,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
+
 
 public class RestClient {
     private static ObjectMapper mapper = new ObjectMapper();
     //TODO change to vm ip or add logic to choose between.
     private static String uri = "http://localhost:8080/rooms/";
-    static RestTemplate restTemplate = new RestTemplate();
+    //private static String uri = "http://172.16.204.2:8080/rooms/";
+    private static RestTemplate restTemplate = new RestTemplate();
 
     public HashMap<String, HashMap<String, Object>> getAllRooms(){
         String responseEntity = restTemplate.getForObject(uri, String.class);
@@ -54,11 +55,10 @@ public class RestClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add(UUID.randomUUID().toString(),room + "," + day + "," + timeslot);
+        map.add(Thread.currentThread().getName(),room + "," + day + "," + timeslot);
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(map, headers);
 
         String putResource = uri + room + "/" + day + "/" + timeslot;
-
         ResponseEntity<String> responseEntity = restTemplate.exchange(putResource, HttpMethod.PUT, request, String.class);
         TypeReference<HashMap<String,Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
         try {

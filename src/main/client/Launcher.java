@@ -9,7 +9,7 @@ public class Launcher {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s - %5$s%6$s%n");
-        new LogWriter();
+        new ClientLogWriter();
         javax.swing.SwingUtilities.invokeLater(() -> launch());
     }
 }

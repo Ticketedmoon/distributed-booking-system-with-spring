@@ -23,7 +23,7 @@ public class BookingWindow extends JFrame {
     private RestClient restClient;
     private TableView viewableTable;
 
-    private int amountClients = 200;
+    private int amountClients = 1000;
     private ClientRequestFactory requestFactory = new ClientRequestFactory(amountClients);
     private ArrayList<ClientRequests> clientRequests;
 
