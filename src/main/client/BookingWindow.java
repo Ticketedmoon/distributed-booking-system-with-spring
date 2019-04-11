@@ -1,8 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BookingWindow extends JFrame {
 
@@ -21,35 +25,70 @@ public class BookingWindow extends JFrame {
 
     private int amountClients = 1000;
     private ClientRequestFactory requestFactory = new ClientRequestFactory(amountClients);
+    private ExecutorService serverAliveVerifier = Executors.newSingleThreadExecutor();
     private ArrayList<ClientRequests> clientRequests;
+    boolean isBookingServerAlive = false;
 
     public BookingWindow(int sizeX, int sizeY) {
         super("University Room Booking System");
 
         // Spawn the RestClient before anything happens - more efficient for loading.
         try {
-            this.setSize(sizeX, sizeY);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
             this.setResizable(false);
             clientRequests = requestFactory.generateClientRequests(amountClients);
             restClient = new RestClient();
-
         }
         finally {
             this.menu = new JPanel(new BorderLayout());
             this.window = new JPanel(new BorderLayout());
             this.viewableTable = new TableView(restClient);
             this.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.lightGray));
-            this.setVisible(true);
+            this.setSize(sizeX, sizeY);
+            setVisible(true);
         }
     }
 
-    public void initialize() {
-        createMenuButtons();
+    public void initialize(String serverName, int port) {
         createCentreWindow();
         buildWindowPanels();
+        createMenuButtons();
+        serverAliveVerifier.submit(() -> checkIfServerAlive(serverName, port));
+    }
+
+    private void checkIfServerAlive(String serverName, int port) {
+        isBookingServerAlive = hostAvailabilityCheck(serverName, port);
+        while(!isBookingServerAlive) {
+            try {
+                System.out.println("Checking if server is alive...");
+                showDisplayTextOnWindow(String.format("Server with IP %s:%d currently not available - retrying every 3 seconds...", serverName, port), Color.RED);
+                changeModeOfButtons(false);
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finally {
+                isBookingServerAlive = hostAvailabilityCheck(serverName, port);
+                removeDisplayTextOnWindow();
+            }
+        }
+        enablePostServerConnectFunctions(serverName, port);
+    }
+
+    private void enablePostServerConnectFunctions(String serverName, int port) {
         initializeActionListeners();
+        changeModeOfButtons(true);
+        showDisplayTextOnWindow(String.format("Server with IP %s:%d is Alive and Accepting Requests", serverName, port), Color.green);
+    }
+
+    private boolean hostAvailabilityCheck(String SERVER_ADDRESS, int TCP_SERVER_PORT) {
+        try (Socket socket = new Socket(SERVER_ADDRESS, TCP_SERVER_PORT)) {
+            return true;
+        } catch (IOException ex) {
+            /* ignore */
+        }
+        return false;
     }
 
     private void buildWindowPanels() {
@@ -97,7 +136,7 @@ public class BookingWindow extends JFrame {
         show_rooms_button.addActionListener(e -> {
             // Build Table of Rooms
             buildDefaultTablePane();
-            removeTestModeText();
+            removeDisplayTextOnWindow();
         });
 
         // Individual Rooms
@@ -107,7 +146,7 @@ public class BookingWindow extends JFrame {
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(L221_button, test_button, XG14_button, T101_button, CG04_button, show_rooms_button);
-            removeTestModeText();
+            removeDisplayTextOnWindow();
         });
 
         XG14_button.addActionListener(e -> {
@@ -116,7 +155,7 @@ public class BookingWindow extends JFrame {
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(XG14_button, L221_button, T101_button, CG04_button, test_button, show_rooms_button);
-            removeTestModeText();
+            removeDisplayTextOnWindow();
         });
 
         T101_button.addActionListener(e -> {
@@ -125,7 +164,7 @@ public class BookingWindow extends JFrame {
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(T101_button, L221_button, XG14_button, test_button, CG04_button, show_rooms_button);
-            removeTestModeText();
+            removeDisplayTextOnWindow();
         });
 
         CG04_button.addActionListener(e -> {
@@ -134,7 +173,7 @@ public class BookingWindow extends JFrame {
             JTable screenTable = viewableTable.getNewTableDisplay(room_details);
             viewableTable.updateTableView(screenTable, window);
             setActiveButtonColour(CG04_button, L221_button, XG14_button, T101_button, test_button, show_rooms_button);
-            removeTestModeText();
+            removeDisplayTextOnWindow();
         });
 
         // Other Functions
@@ -142,7 +181,7 @@ public class BookingWindow extends JFrame {
             viewableTable.updateTableView(null, window);
 
             // create a label to display text
-            showTestModeText();
+            showDisplayTextOnWindow(String.format("Test Mode Activated, Spawning %d virtual client request threads", amountClients), Color.RED);
             requestFactory.scheduleClientRequests(clientRequests);
             setActiveButtonColour(test_button, L221_button, XG14_button, T101_button, CG04_button, show_rooms_button);
         });
@@ -166,17 +205,18 @@ public class BookingWindow extends JFrame {
         return new Object[]{data, columnNames};
     }
 
-    private void showTestModeText() {
-        testModeText = new JLabel(String.format("Test Mode Activated, Spawning %d virtual client request threads",
-                amountClients), SwingConstants.CENTER);
-        testModeText.setFont(new Font("Serif", Font.BOLD, 24));
-        testModeText.setForeground(Color.RED);
+    private void showDisplayTextOnWindow(String text, Color color) {
+        testModeText = new JLabel(text, SwingConstants.CENTER);
+        testModeText.setFont(new Font("Calibri", Font.BOLD, 24));
+        testModeText.setForeground(color);
         window.add(testModeText);
+        window.updateUI();
     }
 
-    private void removeTestModeText() {
+    private void removeDisplayTextOnWindow() {
         if (testModeText != null)
             window.remove(testModeText);
+        window.updateUI();
     }
 
     // Note: Whatever button is passed first will be designated as the active one.
@@ -189,5 +229,14 @@ public class BookingWindow extends JFrame {
         inactiveC.setBackground(Color.lightGray);
         inactiveD.setBackground(Color.lightGray);
         inactiveE.setBackground(Color.lightGray);
+    }
+
+    private void changeModeOfButtons(boolean enabledMode) {
+        JButton [] buttons = new JButton[] { show_rooms_button, L221_button, XG14_button, T101_button,
+                CG04_button, test_button };
+        for (JButton button : buttons) {
+            button.setBackground(Color.lightGray);
+            button.setEnabled(enabledMode);
+        }
     }
 }
