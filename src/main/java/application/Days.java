@@ -30,7 +30,7 @@ public class Days {
     public ConcurrentHashMap<String, AtomicInteger> updateTimeSlotCapacity(String timeslot)
     {
         ConcurrentHashMap<String, AtomicInteger> newTimeslots = timeslotCapacity;
-        newTimeslots.get(timeslot).getAndDecrement();
+        newTimeslots.get(timeslot).updateAndGet(capacity -> capacity > 0 ? capacity - 1 : capacity);
         return newTimeslots;
     }
 

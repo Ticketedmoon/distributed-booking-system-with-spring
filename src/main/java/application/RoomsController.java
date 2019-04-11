@@ -14,7 +14,7 @@ public class RoomsController {
 
     @Autowired
     private Rooms rooms;
-    RoomsMapper mapper = new RoomsMapper();
+    private RoomsMapper mapper = new RoomsMapper();
     /**
      * Returns the entire week timetable for each room in the application.
      * @return
@@ -91,11 +91,12 @@ public class RoomsController {
         RoomsMapper mapper = new RoomsMapper();
         rooms.updateBooking(roomID,day,time, bookingRequest);
         mapper.writeJsonWithObjectMapper(rooms);
+
         return CompletableFuture.completedFuture(rooms.getRoom(roomID));
     }
 
     /**
-     * Returns the if a room is availabe.
+     * Returns the if a room is available.
      * @return Boolean
      */
     @RequestMapping(method = RequestMethod.GET, value = "/rooms/{roomID}/{day}/{time}")

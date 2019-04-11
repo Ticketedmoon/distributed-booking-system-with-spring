@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,12 @@ public class BookingWindow extends JFrame {
     private RestClient restClient;
     private TableView viewableTable;
 
+    private int amountClients = 200;
+    private ClientRequestFactory requestFactory = new ClientRequestFactory(amountClients);
+    private ArrayList<ClientRequests> clientRequests;
+
+
+
     public BookingWindow(int sizeX, int sizeY) {
         super("University Room Booking System");
 
@@ -30,8 +37,9 @@ public class BookingWindow extends JFrame {
             this.setSize(sizeX, sizeY);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
-
+            clientRequests = requestFactory.generateClientRequests(amountClients);
             restClient = new RestClient();
+
         }
         finally {
             this.menu = new JPanel(new BorderLayout());
@@ -143,6 +151,7 @@ public class BookingWindow extends JFrame {
         // Other Functions
         test_button.addActionListener(e -> {
             viewableTable.updateTableView(null, window);
+            requestFactory.scheduleClientRequests(clientRequests);
             setActiveButtonColour(test_button, L221_button, XG14_button, T101_button, CG04_button, show_rooms_button, help_button);
         });
 
