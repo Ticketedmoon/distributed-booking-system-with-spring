@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.annotation.PostConstruct;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -14,7 +13,10 @@ public class TableView {
     private JTable currentTable;
     private JScrollPane tableView;
     private RestClient restClient;
+
+    // Variables below are used for cohesive UI design and communication of intent to the user.
     private String roomName;
+    private String [] timetableDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     private CustomTableCellRenderer renderer;
     private JPanel currentWindow;
@@ -25,7 +27,6 @@ public class TableView {
         JDialog.setDefaultLookAndFeelDecorated(true);
     }
 
-    @PostConstruct
     public JTable getNewTableDisplay(HashMap<String, Object> rooms) {
         ArrayList<HashMap<String, Object>> days =  (ArrayList<HashMap<String, Object>>) rooms.get("days");
         LinkedHashMap<String, LinkedHashMap<String, Integer>> mappingDayToTimes = new LinkedHashMap<>();
@@ -79,7 +80,7 @@ public class TableView {
         return model;
     }
 
-    public void build_table(Object[][] data, String [] columnNames, JPanel window) {
+    public void build_table(Object[][] data, Object [] columnNames, JPanel window) {
         //create table with data
         currentTable = new JTable(data, columnNames);
         updateTableView(currentTable, window);
@@ -134,7 +135,7 @@ public class TableView {
 
     private void displayBookingDialogBox(int row, int col, String timePeriod) {
         int response = JOptionPane.showConfirmDialog(null,
-                String.format("Confirm Room Booking for Room %s at %s", roomName, timePeriod), "Booking Confirmation",
+                String.format("Confirm Room Booking for Room %s on %s at %s", roomName, timetableDays[col], timePeriod), "Booking Confirmation",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.NO_OPTION) {
             JOptionPane.showMessageDialog(null, "Room not booked");
@@ -149,9 +150,9 @@ public class TableView {
                 restClient.bookRoom(roomName, col, timePeriod);
                 renderer.setCellColour(row, col, Color.green);
 
-                JOptionPane.showMessageDialog(null, String.format("Room %s booked for time %s \n ",
-                        roomName,timePeriod));
-                System.out.println(String.format("Room with ID %s Booked for time period %s", roomName, timePeriod));
+                JOptionPane.showMessageDialog(null, String.format("Room %s booked on %s for time %s \n ",
+                        roomName, timetableDays[col], timePeriod));
+                System.out.println(String.format("Room with ID %s Booked on %s for time period %s", roomName, timetableDays[col], timePeriod));
 
                 HashMap<String, Object> room_details = restClient.getRoom(this.roomName);
                 JTable table = getNewTableDisplay(room_details);
@@ -159,13 +160,13 @@ public class TableView {
             }
             else {
                 renderer.setCellColour(row, col, Color.red);
-                JOptionPane.showMessageDialog(null, String.format("Room %s is fully booked at time %s \n " +
-                        "Please select another room or time", roomName,timePeriod));
+                JOptionPane.showMessageDialog(null, String.format("Room %s is fully booked on day %s at time %s \n " +
+                        "Please select another room or time", roomName, timetableDays[col], timePeriod));
             }
 
             // If after we book the room is full | I.E there are no more slots left, then colour becomes red...
             if (!restClient.roomAvailableAtTime(roomName, col, timePeriod)) {
-                System.out.println(String.format("Room with ID %s for time period %s fully booked!", roomName, timePeriod));
+                System.out.println(String.format("Room with ID %s on %s for time period %s fully booked!", roomName, timetableDays[col], timePeriod));
                 renderer.setCellColour(row, col, Color.red);
             }
         } else if (response == JOptionPane.CLOSED_OPTION) {
