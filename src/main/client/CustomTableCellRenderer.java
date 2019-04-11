@@ -8,7 +8,6 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
 
     private HashMap<Integer, ArrayList<Color>> mapOfColours;
 
-    // Todo: magic number in for-loop - fix later
     public CustomTableCellRenderer() {
         mapOfColours = new HashMap<>();
         this.buildColourMap();
@@ -21,14 +20,6 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
                 mapOfColours.get(row).add(Color.GRAY);
             }
         }
-    }
-
-    public void setRowColour(int row, Color color) {
-        ArrayList<Color> tempColour = new ArrayList<>();
-        for(int i = 0; i < mapOfColours.size(); i++) {
-            tempColour.add(color);
-        }
-        mapOfColours.put(row, tempColour);
     }
 
     public void setCellColour(int row, int col, Color color) {
