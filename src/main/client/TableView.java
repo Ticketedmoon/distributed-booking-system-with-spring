@@ -17,6 +17,7 @@ public class TableView {
     private String roomName;
 
     private CustomTableCellRenderer renderer;
+    private JPanel currentWindow;
 
     public TableView(RestClient restClient) {
         this.restClient = restClient;
@@ -98,6 +99,7 @@ public class TableView {
         tableView = new JScrollPane(tableOnWindow);
         window.add(tableView);
         window.updateUI(); // @Shaun - This was the 'flush' method we were looking for
+        currentWindow = window;
     }
 
     /** Do Booking here, if user clicks cell that is green (available) --
@@ -150,6 +152,10 @@ public class TableView {
                 JOptionPane.showMessageDialog(null, String.format("Room %s booked for time %s \n ",
                         roomName,timePeriod));
                 System.out.println(String.format("Room with ID %s Booked for time period %s", roomName, timePeriod));
+
+                HashMap<String, Object> room_details = restClient.getRoom(this.roomName);
+                JTable table = getNewTableDisplay(room_details);
+                updateTableView(table, currentWindow);
             }
             else {
                 renderer.setCellColour(row, col, Color.red);
