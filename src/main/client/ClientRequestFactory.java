@@ -37,8 +37,8 @@ public class ClientRequestFactory {
         return bookingRequests;
     }
 
-    public void scheduleClientRequests(ArrayList<ClientRequests> bookingRequests){
-        for(ClientRequests requests : bookingRequests){
+    public void scheduleClientRequests(ArrayList<ClientRequests> bookingRequests) {
+        for (ClientRequests requests : bookingRequests) {
             clientExecutor.schedule(requests, requests.getRequestTime(), TimeUnit.SECONDS);
         }
     }
