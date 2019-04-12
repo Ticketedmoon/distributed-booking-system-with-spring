@@ -139,7 +139,13 @@ public class BookingWindow extends JFrame {
 
         // Show All Rooms Button Listener
         show_rooms_button.addActionListener(e -> {
-            buildDefaultTablePane();
+            try {
+                buildDefaultTablePane();
+            } catch (Exception ex) {
+                System.out.println("Tried to Show All Rooms and respective capacities - Server unavailable");
+                resetTableViewIfServerUnavailable();
+            }
+
         });
 
         // Individual Rooms
