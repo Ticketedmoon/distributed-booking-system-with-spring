@@ -27,7 +27,7 @@ public class BookingWindow extends JFrame {
     private int serverPort;
     private String serverName;
     private ClientRequestFactory requestFactory = new ClientRequestFactory(amountClients);
-    private ExecutorService serverAliveVerifier = Executors.newCachedThreadPool();
+    private ExecutorService serverAliveVerifier = Executors.newSingleThreadExecutor();
     private ArrayList<ClientRequests> clientRequests;
     boolean isBookingServerAlive = false;
 
