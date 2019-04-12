@@ -99,7 +99,7 @@ public class TableView {
 
         tableView = new JScrollPane(tableOnWindow);
         window.add(tableView);
-        window.updateUI(); // @Shaun - This was the 'flush' method we were looking for
+        window.updateUI();
         currentWindow = window;
     }
 
@@ -137,41 +137,44 @@ public class TableView {
         int response = JOptionPane.showConfirmDialog(null,
                 String.format("Confirm Room Booking for Room %s on %s at %s", roomName, timetableDays[col], timePeriod), "Booking Confirmation",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (response == JOptionPane.NO_OPTION) {
-            JOptionPane.showMessageDialog(null, "Room not booked");
-            System.out.println("Room Not Booked - No option selected");
-            if(restClient.roomAvailableAtTime(roomName,col,timePeriod))
+        try {
+            if (response == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(null, "Room not booked");
+                System.out.println("Room Not Booked - No option selected");
+                if (restClient.roomAvailableAtTime(roomName, col, timePeriod))
+                    renderer.setCellColour(row, col, Color.green);
+                else
+                    renderer.setCellColour(row, col, Color.red);
+
+            } else if (response == JOptionPane.YES_OPTION) {
+                if (restClient.roomAvailableAtTime(roomName, col, timePeriod)) {
+                    restClient.bookRoom(roomName, col, timePeriod);
+                    renderer.setCellColour(row, col, Color.green);
+
+                    JOptionPane.showMessageDialog(null, String.format("Room %s booked on %s for time %s \n ",
+                            roomName, timetableDays[col], timePeriod));
+                    System.out.println(String.format("Room with ID %s Booked on %s for time period %s", roomName, timetableDays[col], timePeriod));
+
+                    HashMap<String, Object> room_details = restClient.getRoom(this.roomName);
+                    JTable table = getNewTableDisplay(room_details);
+                    updateTableView(table, currentWindow);
+                } else {
+                    renderer.setCellColour(row, col, Color.red);
+                    JOptionPane.showMessageDialog(null, String.format("Room %s is fully booked on day %s at time %s \n " +
+                            "Please select another room or time", roomName, timetableDays[col], timePeriod));
+                }
+
+                // If after we book the room is full | I.E there are no more slots left, then colour becomes red...
+                if (!restClient.roomAvailableAtTime(roomName, col, timePeriod)) {
+                    System.out.println(String.format("Room with ID %s on %s for time period %s fully booked!", roomName, timetableDays[col], timePeriod));
+                    renderer.setCellColour(row, col, Color.red);
+                }
+            } else if (response == JOptionPane.CLOSED_OPTION) {
+                System.out.println("Dialog Box Closed...");
                 renderer.setCellColour(row, col, Color.green);
-            else
-                renderer.setCellColour(row,col, Color.red);
-
-        } else if (response == JOptionPane.YES_OPTION) {
-            if (restClient.roomAvailableAtTime(roomName, col, timePeriod)) {
-                restClient.bookRoom(roomName, col, timePeriod);
-                renderer.setCellColour(row, col, Color.green);
-
-                JOptionPane.showMessageDialog(null, String.format("Room %s booked on %s for time %s \n ",
-                        roomName, timetableDays[col], timePeriod));
-                System.out.println(String.format("Room with ID %s Booked on %s for time period %s", roomName, timetableDays[col], timePeriod));
-
-                HashMap<String, Object> room_details = restClient.getRoom(this.roomName);
-                JTable table = getNewTableDisplay(room_details);
-                updateTableView(table, currentWindow);
             }
-            else {
-                renderer.setCellColour(row, col, Color.red);
-                JOptionPane.showMessageDialog(null, String.format("Room %s is fully booked on day %s at time %s \n " +
-                        "Please select another room or time", roomName, timetableDays[col], timePeriod));
-            }
-
-            // If after we book the room is full | I.E there are no more slots left, then colour becomes red...
-            if (!restClient.roomAvailableAtTime(roomName, col, timePeriod)) {
-                System.out.println(String.format("Room with ID %s on %s for time period %s fully booked!", roomName, timetableDays[col], timePeriod));
-                renderer.setCellColour(row, col, Color.red);
-            }
-        } else if (response == JOptionPane.CLOSED_OPTION) {
-            System.out.println("Dialog Box Closed...");
-            renderer.setCellColour(row, col, Color.green);
+        } catch (Exception e) {
+            System.err.println("Server not responding: {Crashed}");
         }
     }
 
