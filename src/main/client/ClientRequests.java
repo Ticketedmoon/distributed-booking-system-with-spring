@@ -22,9 +22,13 @@ public class ClientRequests implements Runnable {
         return this.requestTime;
     }
 
-    public void run(){
-        LOGGER.info(String.format("Client request %s requesting room %s on day %s, timeslot %s, at %d seconds",
-                Thread.currentThread().getId(), room, day, timeSlot, requestTime));
-        this.restClient.bookRoom(room, day, timeSlot);
+    public void run() {
+        try {
+            LOGGER.info(String.format("Client request %s requesting room %s on day %s, timeslot %s, at %d seconds",
+                    Thread.currentThread().getId(), room, day, timeSlot, requestTime));
+            this.restClient.bookRoom(room, day, timeSlot);
+        } catch (Exception e) {
+            LOGGER.warning("Client Request Failed --> Server Not Responding");
+        }
     }
 }
