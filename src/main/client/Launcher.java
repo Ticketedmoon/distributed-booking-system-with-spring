@@ -1,8 +1,8 @@
 public class Launcher {
 
     public static void launch(String serverName, int port) {
-        BookingWindow  bookingWindow = new BookingWindow(1200, 500);
-        bookingWindow.initialize("127.0.0.1", 8080);
+        BookingWindow  bookingWindow = new BookingWindow(1200, 500, serverName, port);
+        bookingWindow.initialize();
     }
 
     public static void main(String[] args) {
