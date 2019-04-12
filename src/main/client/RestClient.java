@@ -39,7 +39,6 @@ public class RestClient {
         return null;
     }
 
-
     public boolean roomAvailableAtTime(String room, int day, String time) {
         String responseEntity = restTemplate.getForObject(uri + room + "/" + day + "/" + time, String.class);
         TypeReference<Boolean> typeRef = new TypeReference<Boolean>() {};
